@@ -1,8 +1,14 @@
 const path = require('path');
 const webpack = require('webpack');
+//設置HtmlWebpackPlugin
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+//清理/dist文件夾
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 
-module.exports = {
-  entry: './src/index.js',
+module.exports = {  
+  mode: 'development',
+  entry: './src/js/index.js',
+
   output: {
     filename: 'main.js',
     path: path.resolve(__dirname, 'dist')
@@ -28,10 +34,36 @@ module.exports = {
   }, {
     loader: 'sass-loader' // compiles Sass to CSS
   }]
-}
+},
+// 加載圖片
+    {
+      test: /\.(png|svg|jpg|gif)$/,
+      use: [
+        'file-loader'
+      ]
+    },
+    //加載字體
+    {
+      test: /\.(woff|woff2|eot|ttf|otf)$/,
+      use: [
+        'file-loader'
+      ]
+    }
     ]
   },
+  //使用source maps
+  devtool: 'inline-source-map',
+  //使用webpack-dev-server
+  devServer: {
+    contentBase: './dist'
+  },
   plugins: [
+    // 設置HtmlWebpackPlugin
+    new HtmlWebpackPlugin({
+      title: 'Output Management'
+    }),
+    //清理/dist文件夾
+    new CleanWebpackPlugin(),
     new webpack.ProvidePlugin({
       // _: 'lodash',
       $: 'jquery',
